@@ -1,24 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import {Route, Routes} from "react-router-dom";
+import { useSelector, useDispatch} from "react-redux";
+
+import "./scss/app.scss";
+import Home from "./pages/Home";
+import NotFound from "./pages/NotFound";
+import Cart from "./pages/Cart";
+import FullPizza from "./pages/FullPizza";
+import MainLayout from "./layouts/MainLayout";
 
 function App() {
+
+
+  const filter = useSelector((state) => state.filter)
+  const dispatch = useDispatch();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+            <Routes>
+              <Route path='/' element={<MainLayout/>}>
+                <Route path='/' element={<Home/>}/>
+                <Route path='/cart' element={<Cart/>}/>
+                <Route path='/pizza/:id' element={<FullPizza/>}/>
+                <Route path='*' element={<NotFound/>}/>
+              </Route>
+            </Routes>
   );
 }
 
