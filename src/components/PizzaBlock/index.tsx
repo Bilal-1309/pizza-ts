@@ -41,8 +41,10 @@ const PizzaBlock: React.FC<PizzaBlockProps> = ({ id, title, price, imageUrl, siz
   return (
     <div className="pizza-block-wrapper">
       <div className="pizza-block">
-        <Link to={`/pizza/${id}`}><img className="pizza-block__image" src={imageUrl} alt="Pizza" /></Link>
-        <h4 className="pizza-block__title">{title}</h4>
+        <Link to={`/pizza/${id}`}>
+          <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
+          <h4 className="pizza-block__title">{title}</h4>
+        </Link>
         <div className="pizza-block__selector">
           <ul>
             {types.map((type) => (
