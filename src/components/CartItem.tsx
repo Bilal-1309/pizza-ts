@@ -1,43 +1,61 @@
 import React from "react";
-import {useDispatch} from "react-redux";
-import {addItemInCart, CartItem, minusItem, removeItem} from "../redux/slices/cartSlice";
-
+import clsx from "clsx";
+import { useDispatch } from "react-redux";
+import {CartItem} from '../redux/cart/types'
+import {
+  addItemInCart,
+  minusItem,
+  removeItem,
+} from "../redux/cart/slice";
 
 export type CartItemProps = {
-  id: string,
-  title: string,
-  type: string,
-  price: number,
-  size: number,
-  count: number,
-  imageUrl: string
-}
+  id: string;
+  title: string;
+  type: string;
+  price: number;
+  size: number;
+  count: number;
+  imageUrl: string;
+};
 
-const CartItemBlock :React.FC<CartItemProps> = ({ id, title, type, price, size, count, imageUrl }) => {
-
+const CartItemBlock: React.FC<CartItemProps> = ({
+  id,
+  title,
+  type,
+  price,
+  size,
+  count,
+  imageUrl,
+}) => {
   const dispatch = useDispatch();
 
   const onClickPlus = () => {
-    dispatch(addItemInCart({
-      id
-    } as CartItem))
+    dispatch(
+      addItemInCart({
+        id,
+      } as CartItem)
+    );
   };
 
   const onClickMinus = () => {
-    dispatch(minusItem({
-      id,
-      price,
-      count
-    } as CartItem))
-  }
+    dispatch(
+      minusItem({
+        id,
+        price,
+        count,
+      } as CartItem)
+    );
+  };
 
   const onClickRemoveItem = () => {
-    dispatch(removeItem({
-      id,
-      count,
-      price
-    } as CartItem))
-  }
+    dispatch(
+      removeItem({
+        id,
+        count,
+        price,
+      } as CartItem)
+    );
+  };
 
   return (
     <div className="cart__item">
@@ -46,10 +64,15 @@ const CartItemBlock :React.FC<CartItemProps> = ({ id, title, type, price, size, 
       </div>
       <div className="cart__item-info">
         <h3>{title}</h3>
-        <p>{type}, {size} см.</p>
+        <p>
+          {type}, {size} см.
+        </p>
       </div>
       <div className="cart__item-count">
-        <div onClick={onClickMinus} className="button button--outline button--circle cart__item-count-minus">
+        <button
+          onClick={onClickMinus}
+          className={clsx("button button--outline button--circle cart__item-count-minus", {'cart__item-count-minus-disabled' : count === 1})}
+        >
           <svg
             width="10"
             height="10"
@@ -66,9 +89,12 @@ const CartItemBlock :React.FC<CartItemProps> = ({ id, title, type, price, size, 
               fill="#EB5A1E"
             />
           </svg>
-        </div>
+        </button>
         <b>{count}</b>
-        <div onClick={onClickPlus} className="button button--outline button--circle cart__item-count-plus">
+        <button
+          onClick={onClickPlus}
+          className="button button--outline button--circle cart__item-count-plus"
+        >
           <svg
             width="10"
             height="10"
@@ -85,13 +111,16 @@ const CartItemBlock :React.FC<CartItemProps> = ({ id, title, type, price, size, 
               fill="#EB5A1E"
             />
           </svg>
-        </div>
+        </button>
       </div>
       <div className="cart__item-price">
         <b>{price * count} ₽</b>
       </div>
       <div className="cart__item-remove">
-        <div onClick={onClickRemoveItem} className="button button--outline button--circle">
+        <div
+          onClick={onClickRemoveItem}
+          className="button button--outline button--circle"
+        >
           <svg
             width="10"
             height="10"

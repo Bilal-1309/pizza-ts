@@ -8,7 +8,8 @@ type PaginationProps = {
 }
 
 const Pagination: React.FC<PaginationProps> = ({currentPage, handleChangePage}) => {
-  return (
+
+    return (
       <ReactPaginate
         className={styles.root}
         breakLabel="..."

@@ -1,37 +1,41 @@
-import React, {  useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import qs from "qs";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Categories from "../components/Categories";
 import SortPopup from "../components/Sort";
 import Skeleton from "../components/PizzaBlock/Skeleton";
 import PizzaBlock from "../components/PizzaBlock";
 import Pagination from "../components/Pagination";
-import {  useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { selectFilter } from "../redux/filter/selectors";
+import { FilterSliceState,Sort } from "../redux/filter/types";
 import {
-  FilterSliceState,
-  selectFilter,
   setCategoryId,
-  setCurrentPage, setFilters, Sort,
-} from "../redux/slices/filterSlice";
-import {fetchPizzas, SearchPizzaParams, selectPizzaData} from "../redux/slices/pizzaSlice";
-import {useAppDispatch} from "../redux/store";
+  setCurrentPage,
+  setFilters,
+} from "../redux/filter/slice";
+import {SearchPizzaParams} from '../redux/pizza/types'
+import {fetchPizzas} from "../redux/pizza/asyncActions";
+import {selectPizzaData} from '../redux/pizza/selectors';
+import { useAppDispatch } from "../redux/store";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const isMounted = useRef(false);
 
-  const { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter);
+  const { categoryId, sort, currentPage, searchValue } =
+    useSelector(selectFilter);
   const { items: pizzas, status } = useSelector(selectPizzaData);
   const sortType = sort.sortProperty;
 
-  const handleCategory = (idx: number) => {
+  const handleCategory = useCallback((idx: number) => {
     dispatch(setCategoryId(idx));
-  };
+  }, []);
 
-  const handleChangePage = (page: number) => {
+  const handleChangePage = useCallback((page: number) => {
     dispatch(setCurrentPage(page));
-  };
+  }, []);
 
   const getPizzas = async () => {
     const sortBy = sortType.replace("-", "");
@@ -75,7 +79,8 @@ const Home: React.FC = () => {
   //   isMounted.current = true;
   // }, [categoryId, sort.sortProperty, searchValue, currentPage]);
 
-  const pizzaItems = pizzas.map((pizza: any) => (<PizzaBlock key={pizza.id} {...pizza} />
+  const pizzaItems = pizzas.map((pizza: any) => (
+    <PizzaBlock key={pizza.id} {...pizza} />
   ));
   const skeletons = [...new Array(6)].map((_, index) => (
     <Skeleton key={index} />
@@ -85,7 +90,7 @@ const Home: React.FC = () => {
     <div className="container">
       <div className="content__top">
         <Categories category={categoryId} handleCategory={handleCategory} />
-        <SortPopup />
+        <SortPopup value={sort} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       {status === "error" ? (
