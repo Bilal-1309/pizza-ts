@@ -19,6 +19,7 @@ import {fetchPizzas} from "../redux/pizza/asyncActions";
 import {selectPizzaData} from '../redux/pizza/selectors';
 import { useAppDispatch } from "../redux/store";
 
+
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
