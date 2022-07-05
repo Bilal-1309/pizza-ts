@@ -5,11 +5,15 @@ import { lazy } from "react";
 import "./scss/app.scss";
 
 import Home from "./pages/Home";
-import NotFound from "./pages/NotFound";
-import FullPizza from "./pages/FullPizza";
 import MainLayout from "./layouts/MainLayout";
 
-const Cart = lazy(() => import("./pages/Cart"));
+const Cart = lazy(() => import(/* webpackChunkName: 'Cart' */ "./pages/Cart"));
+const FullPizza = lazy(
+  () => import(/* webpackChunkName: 'FullPizza' */ "./pages/FullPizza")
+);
+const NotFound = lazy(
+  () => import(/* webpackChunkName: 'NotFound' */ "./pages/NotFound")
+);
 
 function App() {
   return (
@@ -24,8 +28,22 @@ function App() {
             </Suspense>
           }
         />
-        <Route path="/pizza/:id" element={<FullPizza />} />
-        <Route path="*" element={<NotFound />} />
+        <Route
+          path="/pizza/:id"
+          element={
+            <Suspense fallback={<div>Идет загрузка пицц...</div>}>
+              <FullPizza />
+            </Suspense>
+          }
+        />
+        <Route
+          path="*"
+          element={
+            <Suspense fallback={<div>Идет загрузка...</div>}>
+              <NotFound />
+            </Suspense>
+          }
+        />
       </Route>
     </Routes>
   );

@@ -1,19 +1,11 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import qs from "qs";
 import { useNavigate } from "react-router-dom";
-import Categories from "../components/Categories";
-import SortPopup from "../components/Sort";
-import Skeleton from "../components/PizzaBlock/Skeleton";
-import PizzaBlock from "../components/PizzaBlock";
-import Pagination from "../components/Pagination";
+import {Skeleton, PizzaBlock, Categories, SortPopup, Pagination} from "../components";
 import { useSelector } from "react-redux";
 import { selectFilter } from "../redux/filter/selectors";
 import { FilterSliceState,Sort } from "../redux/filter/types";
-import {
-  setCategoryId,
-  setCurrentPage,
-  setFilters,
-} from "../redux/filter/slice";
+import {setCategoryId, setCurrentPage, setFilters} from "../redux/filter/slice";
 import {SearchPizzaParams} from '../redux/pizza/types'
 import {fetchPizzas} from "../redux/pizza/asyncActions";
 import {selectPizzaData} from '../redux/pizza/selectors';
